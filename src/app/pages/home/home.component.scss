@@ -1,0 +1,24 @@
+
+
+
+.home {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 70vh;
+
+    .home-content {
+        .title {
+            font-size: 140px;
+            margin: 0;
+        }
+    
+        .desc {
+            font-size: 40px;
+            margin: 0;
+            animation: breath 3s infinite ease-in-out;
+        }
+    }
+}
+

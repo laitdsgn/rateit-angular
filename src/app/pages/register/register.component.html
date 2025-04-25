@@ -1,0 +1,48 @@
+<div class="dot-mask"></div>
+
+<div class="register">
+    <div class="register-content">
+        <div class="form-container">
+            <div class="form-content">
+                <div class="form-header">
+                    <h2>Register</h2>
+                </div>
+                <div class="form-body">
+                    <div *ngIf="errorMessage" class="error-message">
+                        {{ errorMessage }}
+                    </div>
+                    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                        <div class="form-group">
+                            <label for="username">Pseudonim:</label><br>
+                            <input type="text" class="form-control" formControlName="username" id="username"
+                                placeholder="laitdsgn">
+                            <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched"
+                                class="error">
+                                Username is required
+                            </div>
+                            <br>
+                            <label for="password">Hasło:</label><br>
+                            <input type="password" class="form-control" formControlName="password" id="password"
+                                placeholder="D@r3kZegarek">
+                            <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+                                class="error">
+                                Password must be between 8 and 20 characters
+                            </div>
+                            <br>
+                            <label for="passwordRepeat">Powtórz hasło:</label><br>
+                            <input type="password" class="form-control" formControlName="passwordRepeat"
+                                id="passwordRepeat" placeholder="D@r3kZegarek">
+                            <div *ngIf="registerForm.errors?.['passwordsMismatch'] && registerForm.get('passwordRepeat')?.touched"
+                                class="error">
+                                Passwords do not match
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="form-submit"
+                            [disabled]="registerForm.invalid">Register</button>
+                    </form>
+                    <p class="login-link">Masz już konto? <a routerLink="/login">Zaloguj się</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

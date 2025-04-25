@@ -1,0 +1,25 @@
+<div class="form-container">
+    <div class="form-content">
+        <div class="form-header">
+            <ng-content select="[form-title]"></ng-content>
+        </div>
+        <div class="form-body">
+            <form>
+                <div class="form-group">
+                    <label for="username">Pseudonim:</label><br>
+                    <input type="text" class="form-control" formControlName='username' id="username"
+                        placeholder="laitdsgn">
+                    <br>
+                    <label for="password">Hasło:</label><br>
+                    <input type="password" class="form-control" formControlName='password' name="password" id="password"
+                        placeholder="D@r3kZegarek">
+                    <br>
+                    <label for="repeat-password">Powtórz hasło:</label><br>
+                    <input type="password" class="form-control" formControlName='repeat-password' name="repeat-password"
+                        id="repeat-password" placeholder="D@r3kZegarek">
+                </div>
+            </form>
+            <button type="submit" class="btn btn-primary" id="form-submit">Submit</button>
+        </div>
+    </div>
+</div>

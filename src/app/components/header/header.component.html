@@ -1,0 +1,21 @@
+<header>
+    <nav>
+        <ul>
+            <div class="logo">
+                <h2>rateit!</h2>
+            </div>
+            <li>
+                <a [routerLink]="['/']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+            </li>
+            <li>
+                <a [routerLink]="['/products']" routerLinkActive="active">Products</a>
+            </li>
+            <li>
+                <a [routerLink]="['/login']" routerLinkActive="active">Login</a>
+            </li>
+            <li>
+                <a [routerLink]="['/register']" routerLinkActive="active">Register</a>
+            </li>
+        </ul>
+    </nav>
+</header>

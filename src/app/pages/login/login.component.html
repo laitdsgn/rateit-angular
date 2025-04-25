@@ -1,0 +1,40 @@
+<div class="dot-mask"></div>
+
+<div class="login">
+    <div class="login-content">
+        <div class="form-container">
+            <div class="form-content">
+                <div class="form-header">
+                    <h2>Login</h2>
+                </div>
+                <div class="form-body">
+                    <div *ngIf="errorMessage" class="error-message">
+                        {{ errorMessage }}
+                    </div>
+                    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                        <div class="form-group">
+                            <label for="username">Pseudonim:</label><br>
+                            <input type="text" class="form-control" formControlName="username" id="username"
+                                placeholder="laitdsgn">
+                            <div *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
+                                class="error">
+                                Username is required
+                            </div>
+                            <br>
+                            <label for="password">Hasło:</label><br>
+                            <input type="password" class="form-control" formControlName="password" id="password"
+                                placeholder="D@r3kZegarek">
+                            <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+                                class="error">
+                                Password is required
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="form-submit"
+                            [disabled]="loginForm.invalid">Login</button>
+                    </form>
+                    <p class="register-link">Nie masz konta? <a routerLink="/register">Zarejestruj się</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
