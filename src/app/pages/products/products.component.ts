@@ -25,28 +25,28 @@ export class ProductsComponent implements OnInit {
   constructor(
     private titleService: Title,
     private productService: ProductService,
-    public authService: AuthService, // Changed from private to public
+    public authService: AuthService, 
     private fb: FormBuilder
   ) {}
 
   ngOnInit() {
     this.titleService.setTitle('Products');
-    this.loadProducts();
     this.initForms();
     
-    // Check if user is logged in
-    if (!this.authService.isLoggedIn()) {
-      // Handle not logged in scenario
-      this.errorMessage = 'You must be logged in to view products';
+    // Only load products if user is logged in
+    if (this.authService.isLoggedIn()) {
+      this.loadProducts();
+    } else {
+      this.errorMessage = 'Musisz być zalogowany, aby zobaczyć tę stronę.';
     }
   }
 
   loadProducts() {
     this.productService.getProducts().subscribe({
       next: (data) => {
-        if (data && data.products) {
-          this.products = data.products;
-        }
+        if (data) {
+          this.products = data;
+        } 
       },
       error: (error) => {
         this.errorMessage = 'Failed to load products';
@@ -110,7 +110,7 @@ export class ProductsComponent implements OnInit {
           if (response.success || response.message) {
             this.successMessage = 'Dodano produkt pomyślnie.';
             this.closePopup();
-            this.loadProducts(); // Refresh the product list
+            this.loadProducts(); 
           } else {
             this.errorMessage = 'Nie udało się dodać produktu.';
           }
@@ -134,7 +134,7 @@ export class ProductsComponent implements OnInit {
           if (response.success || response.message) {
             this.successMessage = 'Oceniono produkt pomyślnie.';
             this.closePopup();
-            this.loadProducts(); // Refresh with updated ratings
+            this.loadProducts(); 
           } else {
             this.errorMessage = 'Nie udało się ocenić produktu.';
           }

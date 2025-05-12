@@ -1,11 +1,4 @@
 <main>
-    <div class="side-menu">
-        <button id="add-product" (click)="showAddProductPopup()">Dodaj produkt</button>
-        <button *ngIf="authService.isLoggedIn()" (click)="logout()" class="logout-btn">
-            Wyloguj {{authService.getCurrentUser()?.username}}
-        </button>
-    </div>
-
     <div *ngIf="errorMessage" class="error-message">
         {{ errorMessage }}
     </div>
@@ -14,128 +7,96 @@
         {{ successMessage }}
     </div>
 
-    <div class="products">
-        <div class="product" *ngFor="let product of products">
-            <div class="product-content">
-                <h2>{{ product.name }}</h2>
-                <hr>
-                <p>{{ product.description }}</p>
-                <p>Kategoria: {{ product.category }}</p>
-                <p>Ocena: {{ product.rating || 'Brak ocen' }}</p>
-            </div>
-            <div class="product-functional">
-                <button class="rate-product-btn" (click)="showRateProductPopup(product.id)">Oceń</button>
+    <!-- Show content only if user is logged in -->
+    <ng-container *ngIf="authService.isLoggedIn(); else notLoggedIn">
+        <div class="side-menu">
+            <button id="add-product" (click)="showAddProductPopup()">Dodaj produkt</button>
+            <button (click)="logout()" class="logout-btn btn btn-danger">
+                Wyloguj {{authService.getCurrentUser()?.username}}
+            </button>
+        </div>
+
+        <div class="products">
+            <div class="product" *ngFor="let product of products">
+                <div class="product-content">
+                    <h2>{{ product.name }}</h2>
+                    <hr>
+                    <p>{{ product.description }}</p>
+                    <p>Kategoria: {{ product.category }}</p>
+                    <p>Ocena: {{ product.rating || 'Brak ocen' }}</p>
+                </div>
+                <div class="product-functional">
+                    <button class="rate-product-btn btn btn-primary "
+                        (click)="showRateProductPopup(product.id)">Oceń</button>
+                </div>
             </div>
         </div>
 
-        <!-- Example products will show when no products are loaded -->
-        <div class="product" *ngIf="products.length === 0">
-            <div class="product-content">
-                <h2>Przykładowy produkt 1</h2>
-                <hr>
-                <p>Karta graficzna Palit RTX 5090 GAMEROCK 32GB GDDR7</p>
-                <p>Kategoria: Kategoria</p>
-                <p>Ocena: 1/5</p>
-            </div>
-            <div class="product-functional">
-                <button class="rate-product-btn" (click)="showRateProductPopup()">Oceń</button>
+
+        <div class="popup-container-add">
+            <div class="popup-add">
+                <div class="popup-content">
+                    <span class="close-popup" (click)="closePopup()"><i class="material-icons Close">close</i></span>
+                    <h2>Dodaj produkt</h2>
+                    <form [formGroup]="addProductForm" (ngSubmit)="submitAddProduct()">
+                        <input type="text" formControlName="name" placeholder="Nazwa produktu">
+                        <div *ngIf="addProductForm.get('name')?.invalid && addProductForm.get('name')?.touched"
+                            class="error">
+                            Nazwa produktu jest wymagana
+                        </div>
+                        <br>
+
+                        <input type="text" formControlName="description" placeholder="Opis produktu">
+                        <div *ngIf="addProductForm.get('description')?.invalid && addProductForm.get('description')?.touched"
+                            class="error">
+                            Opis produktu jest wymagany
+                        </div>
+                        <br>
+
+                        <select formControlName="category">
+                            <option value="default" selected="selected">Wybierz kategorię</option>
+                            <option value="Gry">Gry</option>
+                            <option value="Filmy">Filmy</option>
+                            <option value="Książki">Książki</option>
+                            <option value="Elektronika">Elektronika</option>
+                            <option value="Inne">Inne</option>
+                        </select>
+                        <div *ngIf="addProductForm.get('category')?.invalid && addProductForm.get('category')?.touched"
+                            class="error">
+                            Wybierz kategorię
+                        </div>
+                        <br>
+
+                        <button type="submit" [disabled]="addProductForm.invalid">Dodaj</button>
+                    </form>
+                </div>
             </div>
         </div>
-        <div class="product" *ngIf="products.length === 0">
-            <div class="product-content">
-                <h2>Przykładowy produkt 2</h2>
-                <hr>
-                <p>Klawiatura DARK PROJECT DPO87 Violet Horizons</p>
-                <p>Kategoria: Kategoria</p>
-                <p>Ocena: 5/5</p>
-            </div>
-            <div class="product-functional">
-                <button class="rate-product-btn" (click)="showRateProductPopup()">Oceń</button>
+
+        <div class="popup-container-rate">
+            <div class="popup-rate">
+                <div class="popup-content">
+                    <span class="close-popup" (click)="closePopup()"><i class="material-icons Close">close</i></span>
+                    <h2>Oceń produkt</h2>
+                    <form [formGroup]="rateProductForm" (ngSubmit)="submitRateProduct()">
+                        <input type="number" formControlName="rating" min="1" max="5" placeholder="Ocena (1-5)">
+                        <div *ngIf="rateProductForm.get('rating')?.invalid && rateProductForm.get('rating')?.touched"
+                            class="error">
+                            Ocena musi być od 1 do 5
+                        </div>
+                        <br>
+
+                        <button type="submit" [disabled]="rateProductForm.invalid">Oceń</button>
+                    </form>
+                </div>
             </div>
         </div>
-        <div class="product" *ngIf="products.length === 0">
-            <div class="product-content">
-                <h2>Przykładowy produkt 3</h2>
-                <hr>
-                <p>Słuchawki MAD DOG GH003 Nauszne</p>
-                <p>Kategoria: Elektronika
-                </p>
-                <p>Ocena: 3/5</p>
-            </div>
-            <div class="product-functional">
-                <button class="rate-product-btn" (click)="showRateProductPopup()">Oceń</button>
-            </div>
+    </ng-container>
+
+    <ng-template #notLoggedIn>
+        <div class="login-required">
+            <p>Musisz być zalogowany, aby zobaczyć produkty.</p>
+            <a routerLink="/login">Przejdź do strony logowania</a>
         </div>
-        <div class="product" *ngIf="products.length === 0">
-            <div class="product-content">
-                <h2>Przykładowy produkt 4</h2>
-                <hr>
-                <p>Mysz STEELSERIES Rival 3</p>
-                <p>Kategoria: Kategoria</p>
-                <p>Ocena: 2/5</p>
-            </div>
-            <div class="product-functional">
-                <button class="rate-product-btn" (click)="showRateProductPopup()">Oceń</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="popup-container-add">
-        <div class="popup-add">
-            <div class="popup-content">
-                <span class="close-popup" (click)="closePopup()"><i class="material-icons Close">close</i></span>
-                <h2>Dodaj produkt</h2>
-                <form [formGroup]="addProductForm" (ngSubmit)="submitAddProduct()">
-                    <input type="text" formControlName="name" placeholder="Nazwa produktu">
-                    <div *ngIf="addProductForm.get('name')?.invalid && addProductForm.get('name')?.touched"
-                        class="error">
-                        Nazwa produktu jest wymagana
-                    </div>
-                    <br>
-
-                    <input type="text" formControlName="description" placeholder="Opis produktu">
-                    <div *ngIf="addProductForm.get('description')?.invalid && addProductForm.get('description')?.touched"
-                        class="error">
-                        Opis produktu jest wymagany
-                    </div>
-                    <br>
-
-                    <select formControlName="category">
-                        <option value="default" selected="selected">Wybierz kategorię</option>
-                        <option value="Gry">Gry</option>
-                        <option value="Filmy">Filmy</option>
-                        <option value="Książki">Książki</option>
-                        <option value="Elektronika">Elektronika</option>
-                        <option value="Inne">Inne</option>
-                    </select>
-                    <div *ngIf="addProductForm.get('category')?.invalid && addProductForm.get('category')?.touched"
-                        class="error">
-                        Wybierz kategorię
-                    </div>
-                    <br>
-
-                    <button type="submit" [disabled]="addProductForm.invalid">Dodaj</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="popup-container-rate">
-        <div class="popup-rate">
-            <div class="popup-content">
-                <span class="close-popup" (click)="closePopup()"><i class="material-icons Close">close</i></span>
-                <h2>Oceń produkt</h2>
-                <form [formGroup]="rateProductForm" (ngSubmit)="submitRateProduct()">
-                    <input type="number" formControlName="rating" min="1" max="5" placeholder="Ocena (1-5)">
-                    <div *ngIf="rateProductForm.get('rating')?.invalid && rateProductForm.get('rating')?.touched"
-                        class="error">
-                        Ocena musi być od 1 do 5
-                    </div>
-                    <br>
-
-                    <button type="submit" [disabled]="rateProductForm.invalid">Oceń</button>
-                </form>
-            </div>
-        </div>
-    </div>
+    </ng-template>
 </main>

@@ -167,3 +167,8 @@
   .close-popup {
     cursor: pointer;
   }
+
+  .error-message, .success-message {
+    z-index: 1000;
+    position: absolute;
+  }
