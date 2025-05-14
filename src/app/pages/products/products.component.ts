@@ -124,10 +124,14 @@ export class ProductsComponent implements OnInit {
       this.errorMessage = 'Please fill out all required fields correctly';
     }
   }
-
   submitRateProduct() {
     if (this.rateProductForm.valid && this.selectedProductId !== null) {
       const rating = this.rateProductForm.get('rating')?.value;
+      
+      if (!this.authService.getCurrentUser()?.id) {
+        this.errorMessage = 'Musisz być zalogowany, aby ocenić produkt.';
+        return;
+      }
       
       this.productService.rateProduct(this.selectedProductId, rating).subscribe({
         next: (response) => {
@@ -136,7 +140,7 @@ export class ProductsComponent implements OnInit {
             this.closePopup();
             this.loadProducts(); 
           } else {
-            this.errorMessage = 'Nie udało się ocenić produktu.';
+            this.errorMessage = response.error || 'Nie udało się ocenić produktu.';
           }
         },
         error: (err) => {
@@ -145,7 +149,7 @@ export class ProductsComponent implements OnInit {
         }
       });
     } else {
-      this.errorMessage = 'Please provide a valid rating';
+      this.errorMessage = 'Podaj poprawną ocenę (od 1 do 5)';
     }
   }
 

@@ -4,4 +4,5 @@ export interface Product {
   description: string;
   category: string;
   rating?: number;
+  avg_rating?: number;
 }

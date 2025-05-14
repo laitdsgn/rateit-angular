@@ -4,7 +4,9 @@ import { BehaviorSubject, Observable, tap, catchError, of } from 'rxjs';
 import { Router } from '@angular/router';
 
 interface User {
+  id: number;
   username: string;
+  is_master?: number;
 }
 
 @Injectable({

@@ -23,13 +23,31 @@ export class ProductService {
       .pipe(
         catchError(this.handleError<any>('addProduct'))
       );
-  }
-
+  }  
   rateProduct(productId: number, rating: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}?action=rateProduct`, { productId, rating })
+    const userId = this.getUserId();
+    
+    if (!userId) {
+      return of({ success: false, error: 'User ID not found. Please log in again.' });
+    }
+    
+    return this.http.post(`${this.apiUrl}?action=createReview`, { 
+      user_id: userId,
+      product_id: productId, 
+      rating: rating 
+    })
       .pipe(
         catchError(this.handleError<any>('rateProduct'))
       );
+  }
+  
+  private getUserId(): number | null {
+    const userString = sessionStorage.getItem('user');
+    if (userString) {
+      const user = JSON.parse(userString);
+      return user.id;
+    }
+    return null;
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
