@@ -8,7 +8,7 @@
     </div>
 
     <!-- Show content only if user is logged in -->
-    <ng-container *ngIf="authService.isLoggedIn(); else notLoggedIn">
+    <ng-container *ngIf="authService.isLoggedIn();">
         <div class="side-menu">
             <button id="add-product" (click)="showAddProductPopup()">Dodaj produkt</button>
             <button (click)="logout()" class="logout-btn btn btn-danger">
@@ -93,10 +93,6 @@
         </div>
     </ng-container>
 
-    <ng-template #notLoggedIn>
-        <div class="login-required">
-            <p>Musisz być zalogowany, aby zobaczyć produkty.</p>
-            <a routerLink="/login">Przejdź do strony logowania</a>
-        </div>
-    </ng-template>
+
+
 </main>

@@ -29,7 +29,7 @@ export class RegisterComponent implements OnInit {
     this.titleService.setTitle('Register');
     this.initForm();
     
-    // If already logged in, redirect to products
+
     if (this.authService.isLoggedIn()) {
       this.router.navigate(['/products']);
     }
@@ -67,12 +67,12 @@ export class RegisterComponent implements OnInit {
           if (response.success || response.message) {
             this.router.navigate(['/login']);
           } else {
-            this.errorMessage = response.error || 'Registration failed.';
+            this.errorMessage = response.error || 'Rejestracja zakonczona niepowodzeniem.';
           }
         },
         error: (error) => {
           console.error('Registration error:', error);
-          this.errorMessage = 'An error occurred during registration. Please try again.';
+          this.errorMessage = 'ERROR';
         }
       });
     }

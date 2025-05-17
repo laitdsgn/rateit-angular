@@ -18,7 +18,7 @@
                                 placeholder="laitdsgn">
                             <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched"
                                 class="error">
-                                Username is required
+                                Pseudonim wymagany
                             </div>
                             <br>
                             <label for="password">Hasło:</label><br>
@@ -26,7 +26,7 @@
                                 placeholder="D@r3kZegarek">
                             <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
                                 class="error">
-                                Password must be between 8 and 20 characters
+                                Hasło musi mieć od 8 do 20 znakow
                             </div>
                             <br>
                             <label for="passwordRepeat">Powtórz hasło:</label><br>
@@ -34,7 +34,7 @@
                                 id="passwordRepeat" placeholder="D@r3kZegarek">
                             <div *ngIf="registerForm.errors?.['passwordsMismatch'] && registerForm.get('passwordRepeat')?.touched"
                                 class="error">
-                                Passwords do not match
+                                Hasła nie pasują
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary" id="form-submit"

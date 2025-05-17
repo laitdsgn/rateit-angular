@@ -33,7 +33,7 @@ export class ProductsComponent implements OnInit {
     this.titleService.setTitle('Products');
     this.initForms();
     
-    // Only load products if user is logged in
+
     if (this.authService.isLoggedIn()) {
       this.loadProducts();
     } else {

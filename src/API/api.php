@@ -61,14 +61,13 @@ switch ($action) {
         echo json_encode($users);
         break;
 
-    // Product operations
     case 'createProduct':
         if (isset($_POST['name']) && isset($_POST['category']) && isset($_POST['description'])) {
             $name = $conn->real_escape_string($_POST['name']);
             $category = $conn->real_escape_string($_POST['category']);
             $description = $conn->real_escape_string($_POST['description']);
 
-            // Now check if any of the fields are empty after we've defined them
+
             if (empty($name) || empty($category) || empty($description)) {
                 echo json_encode(['success' => false, 'message' => 'Wszystkie pola są wymagane']);
                 exit;
@@ -92,6 +91,21 @@ switch ($action) {
             $products[] = $row;
         }
         echo json_encode($products);
+        break;
+    case 'searchProducts':
+        if (isset($_POST['name'])) {
+            $name = $conn->real_escape_string($_POST['name']);
+            $search = $conn->query("SELECT * FROM products WHERE name LIKE '%$name%'");
+
+            $products = [];
+            while ($row = $search->fetch_assoc()) {
+                $products[] = $row;
+            }
+            echo json_encode($products);
+        } else {
+            echo json_encode(["error" => "Missing name parameter"]);
+        }
+
         break;
     case 'deleteProduct':
         if (isset($_POST['id']) && ($_POST['is_master'] == 1)) {

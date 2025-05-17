@@ -52,12 +52,12 @@ export class LoginComponent implements OnInit {
           if (response.success) {
             this.router.navigate(['/products']);
           } else {
-            this.errorMessage = response.error || 'Login failed. Please check your credentials.';
+            this.errorMessage = response.error || 'Logowanie zakonczone niepowodzeniem.';
           }
         },
         error: (error) => {
           console.error('Login error:', error);
-          this.errorMessage = 'An error occurred during login. Please try again.';
+          this.errorMessage = 'ERROR';
         }
       });
     }
